@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Bus - Book Your Travel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"href="s.css">
+    
+
+</head>
+<body style="background-image:url('busimage.jpg');
+      background-size:cover;
+      background-repeat:no-repeat;">
+
+    <header class="header">
+        <div class="logo">
+            <h1>Red Bus</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="redbus.html">Home</a></li>
+                <li><a href="booking.html">Book Tickets</a></li>
+                <li><a href="offer.html">Offers</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="prof.html">Profile</a></li>
+                <li><a href="payment2.html">Payment</a></li>
+            </ul>
+        </nav>
+    </header>
+
+     <section class="search-section">
+        <h2>Find Your Bus</h2>
+        <form class="search-form">
+            <input type="text" id="from" placeholder="From" required>
+            <input type="text" id="to" placeholder="To" required>
+            <input type="date" id="date" required>
+            <button type="button" id="searchBtn">Search</button>
+        </form>
+    </section>
+
+    
+    <div class="bus-container" id="busContainer">
+       
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Red Bus. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        
+        const buses = [
+            {
+                name: "Express Bus",
+                details: "AC Seater • 40 seats available",
+                departure: "08:00 AM",
+                duration: "5h 30m",
+                arrival: "01:30 PM",
+                fare: "₹ 500",
+            },
+            {
+                name: "Cityline Travels",
+                details: "Non-AC Seater • 20 seats available",
+                departure: "09:30 AM",
+                duration: "6h 15m",
+                arrival: "03:45 PM",
+                fare: "₹ 350",
+            },
+            {
+                name: "Luxury Coach",
+                details: "AC Sleeper • 30 seats available",
+                departure: "11:00 AM",
+                duration: "4h 45m",
+                arrival: "03:45 PM",
+                fare: "₹ 750",
+            },
+            {
+                name: "Budget Travel",
+                details: "Non-AC Seater • 50 seats available",
+                departure: "12:30 PM",
+                duration: "5h 0m",
+                arrival: "05:30 PM",
+                fare: "₹ 300",
+            },
+        ];
+
+        document.getElementById("searchBtn").addEventListener("click", function() {
+            const from = document.getElementById("from").value;
+            const to = document.getElementById("to").value;
+            const date = document.getElementById("date").value;
+
+           
+            const busContainer = document.getElementById("busContainer");
+            busContainer.innerHTML = "";
+
+            
+            if (from && to && date) {
+                buses.forEach(bus => {
+                    const busCard = document.createElement("div");
+                    busCard.className = "bus-card";
+                    busCard.innerHTML = `
+                        <div class="bus-info">
+                            <div class="bus-name">${bus.name}</div>
+                            <div class="bus-details">${bus.details}</div>
+                        </div>
+                        <div class="bus-schedule">
+                            <div class="time">Departure: ${bus.departure}</div>
+                            <div class="duration">Duration: ${bus.duration}</div>
+                            <div class="time">Arrival: ${bus.arrival}</div>
+                        </div>
+                        <div class="fare">${bus.fare}</div>
+                        <button class="book-btn"><a href="booking.html">Book Now</a></button>
+                    `;
+                    busContainer.appendChild(busCard);
+                });
+            } else {
+                alert("Please fill all fields.");
+            }
+        });
+    </script>
+</body>
+</html>

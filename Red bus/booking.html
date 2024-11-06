@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Seat Booking with Offers</title>
+    
+    <style>
+        * {
+            background-color:lightslategray;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .seat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background:transparent;
+            backdrop-filter: blur(3px);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #4CAF50; /* Available */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .seat:hover {
+            background-color: #45a049;
+        }
+
+        .seat.selected {
+            background-color: #ffd700; /* Selected */
+        }
+
+        .seat.booked {
+            background-color: #e74c3c; /* Booked */
+            cursor: not-allowed;
+        }
+
+        .offer-section, .confirmation {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .apply-offer {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .apply-offer input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .apply-btn, .book-btn {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .apply-btn:hover, .book-btn:hover {
+            background-color: #45a049;
+        }
+
+        .error-message, .success-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Bus Seat Booking with Offers</h1>
+    </div>
+
+    <!-- Seat Booking Section -->
+    <div class="seat-container">
+        <div class="seat-grid">
+            <div class="seat" data-seat-number="1"></div>
+            <div class="seat" data-seat-number="2"></div>
+            <div class="seat booked" data-seat-number="3"></div>
+            <div class="seat" data-seat-number="4"></div>
+            <div class="seat" data-seat-number="5"></div>
+            <div class="seat" data-seat-number="6"></div>
+            <div class="seat" data-seat-number="7"></div>
+            <div class="seat booked" data-seat-number="8"></div>
+            <div class="seat" data-seat-number="9"></div>
+            <div class="seat" data-seat-number="10"></div>
+        </div>
+
+        <div class="confirmation">
+            <p>Selected Seats: <span id="selectedSeats">0</span></p>
+            <p>Total Price: ₹ <span id="totalPrice">0</span></p>
+        </div>
+
+        <div class="offer-section">
+            <h2>Enter Offer Code</h2>
+            <div class="apply-offer">
+                <input type="text" id="offerCode" placeholder="Enter Code">
+                <button class="apply-btn" id="applyOfferBtn">Apply</button>
+            </div>
+            <div id="offerMessage" class="error-message"></div>
+        </div>
+
+        <button class="book-btn" id="bookBtn">Book Now</button>
+    </div>
+
+    <script>
+        const seats = document.querySelectorAll('.seat');
+        const selectedSeatsCount = document.getElementById('selectedSeats');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        const offerCodeInput = document.getElementById('offerCode');
+        const offerMessage = document.getElementById('offerMessage');
+        const ticketPricePerSeat = 50; // Set base price per seat
+        let selectedSeats = [];
+        let discount = 0;
+
+        // Offer codes
+        const offers = {
+            'AC10': 10,     // 10% discount
+            'APP15': 15,    // 15% discount
+            'FESTIVE20': 20 // 20% discount
+        };
+
+        seats.forEach(seat => {
+            seat.addEventListener('click', () => {
+                if (!seat.classList.contains('booked')) {
+                    seat.classList.toggle('selected');
+                    const seatNumber = seat.getAttribute('data-seat-number');
+
+                    if (seat.classList.contains('selected')) {
+                        selectedSeats.push(seatNumber);
+                    } else {
+                        selectedSeats = selectedSeats.filter(s => s !== seatNumber);
+                    }
+                    updateDisplay();
+                }
+            });
+        });
+
+        document.getElementById('applyOfferBtn').addEventListener('click', () => {
+            const offerCode = offerCodeInput.value.toUpperCase();
+            if (offers[offerCode]) {
+                discount = offers[offerCode];
+                offerMessage.textContent = `Offer applied: ${discount}% off!`;
+                offerMessage.classList.add('success-message');
+                offerMessage.classList.remove('error-message');
+            } else {
+                discount = 0;
+                offerMessage.textContent = 'Invalid offer code!';
+                offerMessage.classList.add('error-message');
+                offerMessage.classList.remove('success-message');
+            }
+            updateDisplay();
+        });
+
+        document.getElementById('bookBtn').addEventListener('click', () => {
+            if (selectedSeats.length > 0) {
+                alert(`Seats booked: ${selectedSeats.join(', ')}\nTotal Price: $${calculateTotalPrice()}`);
+                selectedSeats.forEach(seatNumber => {
+                    const seat = [...seats].find(s => s.getAttribute('data-seat-number') === seatNumber);
+                    seat.classList.remove('selected');
+                    seat.classList.add('booked');
+                });
+                selectedSeats = [];
+                offerCodeInput.value = '';
+                offerMessage.textContent = '';
+                discount = 0;
+                updateDisplay();
+            } else {
+                alert('Please select at least one seat to book.');
+            }
+        });
+
+        function updateDisplay() {
+            selectedSeatsCount.textContent = selectedSeats.length;
+            totalPriceDisplay.textContent = calculateTotalPrice();
+        }
+
+        function calculateTotalPrice() {
+            const total = selectedSeats.length * ticketPricePerSeat;
+            const discountedTotal = total - (total * discount / 100);
+            return discountedTotal.toFixed(2);
+        }
+    </script>
+</body>
+</html>

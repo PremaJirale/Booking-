@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Offers - Bus Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .offers-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .offer-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .offer-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .offer-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .offer-description {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .offer-code {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+
+        .apply-btn {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .apply-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Available Offers</h1>
+    </div>
+
+    <div class="offers-container">
+        <!-- Offer 1 -->
+        <div class="offer-card">
+            <div class="offer-title">Flat 10% Off</div>
+            <div class="offer-description">
+                Get a flat 10% discount on all AC buses when you use the code below. Valid for a limited time only!
+            </div>
+            <div class="offer-code">Code: AC10</div>
+            
+        </div>
+
+        <!-- Offer 2 -->
+        <div class="offer-card">
+            <div class="offer-title">15% Cashback</div>
+            <div class="offer-description">
+                Book your tickets through our app and get 15% cashback on your next booking. Don’t miss out!
+            </div>
+            <div class="offer-code">Code: APP15</div>
+            
+        </div>
+
+        <!-- Offer 3 -->
+        <div class="offer-card">
+            <div class="offer-title">Special Festive Offer</div>
+            <div class="offer-description">
+                Celebrate with us! Use the code below to get 20% off during the festive season. Limited time only.
+            </div>
+            <div class="offer-code">Code: FESTIVE20</div>
+            
+        </div>
+    </div>
+
+</body>
+</html>
